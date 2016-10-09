@@ -96,7 +96,7 @@ def question3(middle_node):
     return middle_node
 
 
-def question4(head):
+def question4(head, partition):
     """
     Partition: Write code to partition a linked list around a value x, such that all nodes less than x come
     before all nodes greater than or equal to x. If x is contained within the list, the values of x only need
@@ -106,9 +106,40 @@ def question4(head):
     Input: 3->5->8->5->10->2->1 [partition = 5]
     Output: 3->1->2->5->10->5->8
     :param head: head node of the input linked list
-    :return: linked list
+    :param partition: value to partition the linked list by
+    :return: head node of a new partitioned linked list
     """
-    pass
+    head_one = Node(data=head.get_data()) if head.get_data() < partition else None
+    head_two = Node(data=head.get_data()) if head.get_data() >= partition else None
+    tail_one = None
+    tail_two = None
+    current_node = head
+    while current_node.get_next() is not None:
+        if current_node.get_next().get_data() < partition:
+            if head_one is None:
+                head_one = Node(data=current_node.get_next().get_data())
+            elif tail_one is None:
+                tail_one = Node(data=current_node.get_next().get_data())
+                head_one.set_next(tail_one)
+            else:
+                new_node = Node(data=current_node.get_next().get_data())
+                tail_one.set_next(new_node)
+                tail_one = new_node
+        elif current_node.get_next().get_data() >= partition:
+            if head_two is None:
+                head_two = Node(data=current_node.get_next().get_data())
+            if tail_two is None:
+                tail_two = Node(data=current_node.get_next().get_data())
+                head_two.set_next(tail_two)
+            else:
+                new_node = Node(data=current_node.get_next().get_data())
+                tail_two.set_next(new_node)
+                tail_two = new_node
+        current_node = current_node.get_next()
+
+    if head_two is not None:
+        tail_one.set_next(head_two)
+    return head_one
 
 
 def question5(head_one, head_two):
@@ -164,103 +195,3 @@ def question8():
     """
     pass
 
-# 2.1 p.94
-node1 = Node(data=1)
-node2 = Node(data=2, next_node=node1)
-node3 = Node(data=2, next_node=node2)
-node4 = Node(data=3, next_node=node3)
-node5 = Node(data=1)
-node6 = Node(data=2, next_node=node5)
-node7 = Node(data=3, next_node=node6)
-start_time = time.time()
-removed_dupes = question1(node4, follow_up=False)
-end_time = time.time()
-execution_time = end_time - start_time
-assert removed_dupes.get_data() is node7.get_data()
-assert removed_dupes.get_next().get_data() is node6.get_data()
-assert removed_dupes.get_next().get_next().get_data() is node5.get_data()
-assert removed_dupes.get_next().get_next().get_next() is None
-print "Question 1 remove dupes time: %s seconds." % format(execution_time, '.2f')
-start_time = time.time()
-removed_dupes = question1(node4, follow_up=True)
-end_time = time.time()
-execution_time = end_time - start_time
-assert removed_dupes.get_data() is node7.get_data()
-assert removed_dupes.get_next().get_data() is node6.get_data()
-assert removed_dupes.get_next().get_next().get_data() is node5.get_data()
-assert removed_dupes.get_next().get_next().get_next() is None
-print "Question 1 remove dupes follow up time: %s seconds." % format(execution_time, '.2f')
-# 2.2 p.94
-start_time = time.time()
-kth_node = question2(node7, 1)
-end_time = time.time()
-execution_time = end_time - start_time
-assert kth_node.get_data() is node6.get_data()
-assert kth_node.get_next() is node6.get_next()
-print "Question 2 kth node time: %s seconds." % format(execution_time, '.2f')
-# 2.3 p.94
-node1 = Node(data=1)
-node2 = Node(data=2, next_node=node1)
-node3 = Node(data=2, next_node=node2)
-node4 = Node(data=3, next_node=node3)
-node5 = Node(data=1)
-node6 = Node(data=2, next_node=node5)
-node7 = Node(data=3, next_node=node6)
-start_time = time.time()
-node3 = question3(node3)
-end_time = time.time()
-execution_time = end_time - start_time
-assert node3.get_data() == 3
-assert node3.get_next() is None
-print "Question 3 Delete Middle Node time: %s seconds." % format(execution_time, '.2f')
-# 2.4 p.94
-is_perm_of_palindrome = question4('Theramin')
-assert is_perm_of_palindrome is False
-t = timeit.Timer(stmt='question4("Theramin")', setup='from interview_questions import question4')
-print "Question 4 not permutation of palindrome: %s seconds." % t.timeit(5)
-is_perm_of_palindrome = question4('Tact Coa')
-assert is_permutation is True
-t = timeit.Timer(stmt='question4("Tact Coa")', setup='from interview_questions import question4')
-print "Question 4 permutation of palindrome: %s seconds." % t.timeit(5)
-# 2.5 p.95
-is_one_away = question5('pale', 'ple')
-assert is_one_away is True
-t = timeit.Timer(stmt='question5("pale", "ple")', setup='from interview_questions import question5')
-print "Question 5 one away True1: %s seconds." % t.timeit(5)
-is_one_away = question5('pales', 'pale')
-assert is_one_away is True
-t = timeit.Timer(stmt='question5("pales", "pale")', setup='from interview_questions import question5')
-print "Question 5 one away True2: %s seconds." % t.timeit(5)
-is_one_away = question5('pale', 'bale')
-assert is_one_away is True
-t = timeit.Timer(stmt='question5("pale", "bale")', setup='from interview_questions import question5')
-print "Question 5 one away True3: %s seconds." % t.timeit(5)
-is_one_away = question5('pale', 'bake')
-assert is_one_away is False
-t = timeit.Timer(stmt='question5("pale", "bake")', setup='from interview_questions import question5')
-print "Question 5 one away False: %s seconds." % t.timeit(5)
-# 2.6 p.95
-compressed_string = question6('aa')
-assert compressed_string == 'aa'
-t = timeit.Timer(stmt='question6("aa")', setup='from interview_questions import question6')
-print "Question 6 uncompressed string: %s seconds." % t.timeit(5)
-compressed_string = question6('aabcccccaaa')
-assert compressed_string == 'a2b1c5a3'
-t = timeit.Timer(stmt='question6("aabcccccaaa")', setup='from interview_questions import question6')
-print "Question 6 compressed string: %s seconds." % t.timeit(5)
-# 2.7 p.95
-x = numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
-y = numpy.array([[3, 6, 9, 12], [2, 5, 8, 11], [1, 4, 7, 10]])
-x_rot = question7(x)
-assert numpy.array_equal(x_rot, y) is True
-t = timeit.Timer(stmt='question7(numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]))',
-                 setup='import numpy; from interview_questions import question7')
-print "Question 7 rotated matrix: %s seconds." % t.timeit(5)
-# 2.8 p.95
-x = numpy.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]])
-y = numpy.array([[0, 0, 0], [0, 4, 5], [0, 7, 8], [0, 10, 11]])
-x_zero = question8(x)
-assert numpy.array_equal(x_zero, y) is True
-t = timeit.Timer(stmt='question8(numpy.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]))',
-                 setup='import numpy; from interview_questions import question8')
-print "Question 8 zero matrix: %s seconds." % t.timeit(5)

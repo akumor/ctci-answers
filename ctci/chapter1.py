@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # Chapter 1 Arrays and Strings
-import timeit
 import numpy
 
 
@@ -187,85 +186,3 @@ def question9(s_one, s_two):
         if rotated == s_two:
             return True
     return False
-
-# 1.1 p.90
-is_unique = question1('thisstring')
-assert is_unique is False
-t = timeit.Timer(stmt='question1("thisstring")', setup='from interview_questions import question1')
-print "Question 1 not unique execution time: %s seconds." % t.timeit(5)
-is_unique = question1('orig')
-assert is_unique is True
-t = timeit.Timer(stmt='question1("orig")', setup='from interview_questions import question1')
-print "Question 1 unique execution time: %s seconds." % t.timeit(5)
-# 1.2 p.90
-is_permutation = question2('this', 'fkdaljka')
-assert is_permutation is False
-t = timeit.Timer(stmt='question2("this", "fkdaljka")', setup='from interview_questions import question2')
-print "Question 2 not permutation execution time: %s seconds." % t.timeit(5)
-is_permutation = question2('this', 'hits')
-assert is_permutation is True
-t = timeit.Timer(stmt='question2("this", "hits")', setup='from interview_questions import question2')
-print "Question 2 permutation execution time: %s seconds." % t.timeit(5)
-# 1.3 p.90
-urlified = question3("Mr John Smith")
-assert urlified == "Mr%20John%20Smith"
-t = timeit.Timer(stmt='question3("Mr John Smith")', setup='from interview_questions import question3')
-print "Question 3 urlified: %s seconds." % t.timeit(5)
-# 1.4 p.91
-is_perm_of_palindrome = question4('Theramin')
-assert is_perm_of_palindrome is False
-t = timeit.Timer(stmt='question4("Theramin")', setup='from interview_questions import question4')
-print "Question 4 not permutation of palindrome: %s seconds." % t.timeit(5)
-is_perm_of_palindrome = question4('Tact Coa')
-assert is_permutation is True
-t = timeit.Timer(stmt='question4("Tact Coa")', setup='from interview_questions import question4')
-print "Question 4 permutation of palindrome: %s seconds." % t.timeit(5)
-# 1.5 p.91
-is_one_away = question5('pale', 'ple')
-assert is_one_away is True
-t = timeit.Timer(stmt='question5("pale", "ple")', setup='from interview_questions import question5')
-print "Question 5 one away True1: %s seconds." % t.timeit(5)
-is_one_away = question5('pales', 'pale')
-assert is_one_away is True
-t = timeit.Timer(stmt='question5("pales", "pale")', setup='from interview_questions import question5')
-print "Question 5 one away True2: %s seconds." % t.timeit(5)
-is_one_away = question5('pale', 'bale')
-assert is_one_away is True
-t = timeit.Timer(stmt='question5("pale", "bale")', setup='from interview_questions import question5')
-print "Question 5 one away True3: %s seconds." % t.timeit(5)
-is_one_away = question5('pale', 'bake')
-assert is_one_away is False
-t = timeit.Timer(stmt='question5("pale", "bake")', setup='from interview_questions import question5')
-print "Question 5 one away False: %s seconds." % t.timeit(5)
-# 1.6 p.91
-compressed_string = question6('aa')
-assert compressed_string == 'aa'
-t = timeit.Timer(stmt='question6("aa")', setup='from interview_questions import question6')
-print "Question 6 uncompressed string: %s seconds." % t.timeit(5)
-compressed_string = question6('aabcccccaaa')
-assert compressed_string == 'a2b1c5a3'
-t = timeit.Timer(stmt='question6("aabcccccaaa")', setup='from interview_questions import question6')
-print "Question 6 compressed string: %s seconds." % t.timeit(5)
-# 1.7 p.91
-x = numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
-y = numpy.array([[3, 6, 9, 12], [2, 5, 8, 11], [1, 4, 7, 10]])
-x_rot = question7(x)
-assert numpy.array_equal(x_rot, y) is True
-t = timeit.Timer(stmt='question7(numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]))',
-                 setup='import numpy; from interview_questions import question7')
-print "Question 7 rotated matrix: %s seconds." % t.timeit(5)
-# 1.8 p.91
-x = numpy.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]])
-y = numpy.array([[0, 0, 0], [0, 4, 5], [0, 7, 8], [0, 10, 11]])
-x_zero = question8(x)
-assert numpy.array_equal(x_zero, y) is True
-t = timeit.Timer(stmt='question8(numpy.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]))',
-                 setup='import numpy; from interview_questions import question8')
-print "Question 8 zero matrix: %s seconds." % t.timeit(5)
-# 1.9 p.91
-assert question9("waterbottle", "erbottlewat") is True
-t = timeit.Timer(stmt='question9("waterbottle", "erbottlewat")', setup='from interview_questions import question9')
-print "Question 9 rotated string: %s seconds." % t.timeit(5)
-assert question9("watertbottle", "erbotttlewat") is False
-t = timeit.Timer(stmt='question9("watertbottle", "erbotttlewat")', setup='from interview_questions import question9')
-print "Question 9 non-rotated string: %s seconds." % t.timeit(5)
