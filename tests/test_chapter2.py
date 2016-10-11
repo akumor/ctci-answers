@@ -155,32 +155,41 @@ class Chapter2Test(unittest.TestCase):
 
     def test_question5(self):
         """
-        TODO 2.5 p.95
+        2.5 p.95
         """
-        node1 = chapter2.Node(data=1)
-        node2 = chapter2.Node(data=2, next_node=node1)
-        node3 = chapter2.Node(data=2, next_node=node2)
-        node4 = chapter2.Node(data=3, next_node=node3)
-        node5 = chapter2.Node(data=1)
-        node6 = chapter2.Node(data=2, next_node=node5)
-        node7 = chapter2.Node(data=3, next_node=node6)
+        log = logging.getLogger("Chapter2Test.test_question5")
 
-        is_one_away = chapter2.question5('pale', 'ple')
-        assert is_one_away is True
-        t = timeit.Timer(stmt='question5("pale", "ple")', setup='from ctci.chapter2 import question5')
-        print "Question 5 one away True1: %s seconds." % t.timeit(5)
-        is_one_away = chapter2.question5('pales', 'pale')
-        assert is_one_away is True
-        t = timeit.Timer(stmt='question5("pales", "pale")', setup='from ctci.chapter2 import question5')
-        print "Question 5 one away True2: %s seconds." % t.timeit(5)
-        is_one_away = chapter2.question5('pale', 'bale')
-        assert is_one_away is True
-        t = timeit.Timer(stmt='question5("pale", "bale")', setup='from ctci.chapter2 import question5')
-        print "Question 5 one away True3: %s seconds." % t.timeit(5)
-        is_one_away = chapter2.question5('pale', 'bake')
-        assert is_one_away is False
-        t = timeit.Timer(stmt='question5("pale", "bake")', setup='from ctci.chapter2 import question5')
-        print "Question 5 one away False: %s seconds." % t.timeit(5)
+        node6 = chapter2.Node(data=2, next_node=None)
+        node5 = chapter2.Node(data=9, next_node=node6)
+        node4 = chapter2.Node(data=5, next_node=node5)
+        node3 = chapter2.Node(data=6, next_node=None)
+        node2 = chapter2.Node(data=1, next_node=node3)
+        node1 = chapter2.Node(data=7, next_node=node2)
+
+        start_time = time.time()
+        head_sum = chapter2.question5(node1, node4)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        assert head_sum.get_data() is 2
+        assert head_sum.get_next().get_data() is 1
+        assert head_sum.get_next().get_next().get_data() is 9
+        log.info("Question 5 addition: %s seconds." % execution_time)
+
+        node6 = chapter2.Node(data=5, next_node=None)
+        node5 = chapter2.Node(data=9, next_node=node6)
+        node4 = chapter2.Node(data=2, next_node=node5)
+        node3 = chapter2.Node(data=7, next_node=None)
+        node2 = chapter2.Node(data=1, next_node=node3)
+        node1 = chapter2.Node(data=6, next_node=node2)
+
+        start_time = time.time()
+        head_sum = chapter2.question5(node1, node4, forward_order=True)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        assert head_sum.get_data() is 9
+        assert head_sum.get_next().get_data() is 1
+        assert head_sum.get_next().get_next().get_data() is 2
+        log.info("Question 5 addition forward order: %s seconds." % execution_time)
 
     def test_question6(self):
         """

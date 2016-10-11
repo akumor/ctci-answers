@@ -142,7 +142,7 @@ def question4(head, partition):
     return head_one
 
 
-def question5(head_one, head_two):
+def question5(head_one, head_two, forward_order=False):
     """
     Sum Lists: You have two numbers represented by a linked list, where each node contains a single
     digit. The digits are stored in reverse order, such that the 1's digit is at the head of the list. Write a
@@ -157,9 +157,66 @@ def question5(head_one, head_two):
     Output: 9->1->2. That is 912.
     :param head_one: head node of the first input linked list
     :param head_two: head node of the second input linked list
+    :param forward_order: True if lists should be treated with the ordering of numbers being in forward order instead of
+    reverse.
     :return: linked list representing the sum of the two input linked lists
     """
-    pass
+    if not forward_order:
+        head_sum = None
+        tail_sum = None
+        current_one = head_one
+        current_two = head_two
+        carry = 0
+        # While there are more significant digits
+        while current_one.get_next() is not None and current_two.get_next() is not None:
+            if head_sum is None:
+                head_sum = Node(data=(current_one.get_data() + current_two.get_data()) % 10)
+            else:
+                if head_sum.get_next() is None:
+                    tail_sum = Node(data=(current_one.get_data() + current_two.get_data() + carry) % 10)
+                    head_sum.set_next(tail_sum)
+                else:
+                    new_node = Node(data=(current_one.get_data() + current_two.get_data() + carry) % 10)
+                    tail_sum.set_next(new_node)
+            carry = (current_one.get_data() + current_two.get_data() + carry) / 10
+            current_one = current_one.get_next()
+            current_two = current_two.get_next()
+
+        # Handle the most significant digit
+        if head_sum is None:
+            head_sum = Node(data=(current_one.get_data() + current_two.get_data()) % 10)
+        elif head_sum.get_next() is None:
+            tail_sum = Node(data=(current_one.get_data() + current_two.get_data() + carry) % 10)
+            head_sum.set_next(tail_sum)
+        else:
+            new_node = Node(data=(current_one.get_data() + current_two.get_data() + carry) % 10)
+            tail_sum.set_next(new_node)
+        carry = (current_one.get_data() + current_two.get_data() + carry) / 10
+        if carry > 0:
+            new_node = Node(data=carry)
+            tail_sum.set_next(new_node)
+        return head_sum
+    else:
+        return _question5_recursive_forward_order(head_one, head_two)[0]
+
+
+def _question5_recursive_forward_order(head_one, head_two):
+    """
+    See question 5.
+    :param head_one: head node of the first input linked list
+    :param head_two: head node of the second input linked list
+    :param forward_order: True if lists should be treated with the ordering of numbers being in forward order instead of
+    reverse.
+    :return: linked list representing the sum of the two input linked lists and a number to be carried over into the more significant digit
+    """
+    # Base Case
+    if head_one.get_next() is None and head_two.get_next() is None:
+        sum_node = Node(data=(head_one.get_data() + head_two.get_data()) % 10)
+        return sum_node, ((head_one.get_data() + head_two.get_data()) / 10)
+    else:
+        new_node, carry = _question5_recursive_forward_order(head_one.get_next(), head_two.get_next())
+        head_sum = Node(data=(head_one.get_data() + head_two.get_data() + carry) % 10, next_node=new_node)
+        return head_sum, ((head_one.get_data() + head_two.get_data()) / 10)
 
 
 def question6():
