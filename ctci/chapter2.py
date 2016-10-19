@@ -219,12 +219,37 @@ def _question5_recursive_forward_order(head_one, head_two):
         return head_sum, ((head_one.get_data() + head_two.get_data()) / 10)
 
 
-def question6():
+def question6(head_node):
     """
     Palindrome: Implement a function to check if a linked list is a palindrome.
-    :return:
+    :param head_node: head node of a linked list that potentially contains a palindrome
+    :return: True if the linked list represents a palindrome and False otherwise
     """
-    pass
+    if head_node is None or head_node.get_data() is None:
+        return False
+
+    if head_node.get_next() is None:
+        return False
+
+    node_list = [head_node.get_data()]
+    current_node = head_node
+    while current_node.get_next() is not None:
+        node_list.append(current_node.get_next().get_data())
+        current_node = current_node.get_next()
+
+    index = 0
+    node_list.reverse()
+    if node_list[index] != head_node.get_data():
+        return False
+
+    current_node = head_node
+    while current_node.get_next() is not None:
+        index += 1
+        if current_node.get_next().get_data() != node_list[index]:
+            return False
+        current_node = current_node.get_next()
+
+    return True
 
 
 def question7():
